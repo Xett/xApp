@@ -5,7 +5,7 @@ Application::Application(const char* window_name)
 	glfwSetErrorCallback(this->ShowGLFWError);
 	if (!glfwInit())
 	{
-		std::cerr << "GLFW ain't innitting nigga" << '\n';
+		std::cerr << "GLFW Error: Failed to initialise!" << '\n';
 		exit(-1);
 	}
 
@@ -22,7 +22,7 @@ Application::Application(const char* window_name)
 	GLenum err = glewInit();
 	if (err != GLEW_OK)
 	{
-		std::cerr << "Glew failed to init and threw the following error: " << glewGetErrorString(err) << '\n';
+		std::cerr << "GLEW Error: " << glewGetErrorString(err) << '\n';
 		glfwTerminate();
 		exit(-1);
 	}
@@ -40,7 +40,7 @@ Application::Application(const char* window_name)
 
 void Application::ShowGLFWError(int error, const char* description)
 {
-	std::cerr << "Error: " << description << '\n';
+	std::cerr << "GLFW Error: " << description << '\n';
 }
 
 void Application::MainLoop()
