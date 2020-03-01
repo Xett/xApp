@@ -16,14 +16,13 @@ set( GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE )
 set( GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE )
 set( GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE )
 set( GLFW_BUILD_INSTALL OFF CACHE BOOL "" FORCE )
-set( BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE )
 
 add_subdirectory( ${GLEW_DIR} )
 add_subdirectory( ${GLFW_DIR} )
 add_subdirectory( ${XEVENTSYSTEM_DIR} )
 
 # Add source to this project's executable.
-add_library (xApp STATIC "Application.h" "Application.cpp"  "Window.h" "Window.cpp" )
+add_library (xApp STATIC "Application.h" "Application.cpp"  "Window.h" "Window.cpp" "WindowResizeEvent.h" "WindowResizeEvent.cpp" )
 add_executable ( xApp_demo "xApp_demo.cpp" )
 target_include_directories(xApp PRIVATE ${GLEW_INCLUDE} ${GLFW_DIR}/include )
 target_include_directories(xApp_demo PRIVATE ${GLEW_INCLUDE} ${GLFW_DIR}/include )
