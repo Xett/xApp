@@ -14,7 +14,6 @@ Application::Application(const char* window_name)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	this->window = new Window(this->event_system, window_name);
-	this->is_running = true;
 
 	glfwSwapInterval(1);
 

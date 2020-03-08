@@ -1,3 +1,6 @@
+#include "xEventSystem/EventSystem.h"
+#include "xEventSystem/Event.h"
+#include "WindowResizeEventDispatcher.h"
 #include "Window.h"
 Window::Window(EventSystem* event_system, const char* window_name)
 {
@@ -10,17 +13,12 @@ Window::Window(EventSystem* event_system, const char* window_name)
 		exit(-1);
 	}
 	glfwMakeContextCurrent(this->window);
-	glfwSetWindowSizeCallback(this->window, this->WindowResized);
+	window_resize_event_dispatcher = new WindowResizeEventDispatcher(this->event_system, 0, this);
+	glfwSetWindowSizeCallback(GetWindow(), glfwWindowResized);
 	glfwSetKeyCallback(this->window, this->KeyPressed);
-}
 
-void Window::WindowResized(GLFWwindow* window, int width, int height)
-{
-	std::cout << "Window resized, new window size: " << width << " x " << height << '\n';
-
-	glClearColor(0, 0, 1, 1);
-	glClear(GL_COLOR_BUFFER_BIT);
-	glfwSwapBuffers(window);
+	event_system->AddEvent(*window_resize_event_dispatcher);
+	event_system->Bind(window_resize_event_dispatcher->GetId(),&WindowResized);
 }
 
 void Window::KeyPressed(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -30,6 +28,29 @@ void Window::KeyPressed(GLFWwindow* window, int key, int scancode, int action, i
 		glfwTerminate();
 		exit(0);
 	}
+}
+
+void Window::glfwWindowResized(GLFWwindow* window, int width, int height)
+{
+	WindowResizeEventDispatcher* event_dispatcher=static_cast<WindowResizeEventDispatcher*>(glfwGetWindowUserPointer(window));
+	event_dispatcher->CallEvent();
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	glfwSwapBuffers(event_dispatcher->window->GetWindow());
+
+	glfwPollEvents();
+	event_dispatcher->event_system->ProcessAllAndYieldAll();
+}
+
+void Window::WindowResized(Event event)
+{
+	std::cout << "window Resized!\n";
+	//glfwGetWindowSize(window->GetWindow(), window->GetWidth(), window->GetHeight());
+	//std::cout << "Window resized, new window size: " << window->GetWidth() << " x " << window->GetHeight() << '\n';
+
+	//glClearColor(0, 0, 1, 1);
+	//glClear(GL_COLOR_BUFFER_BIT);
+	//glfwSwapBuffers(window->GetWindow());
 }
 
 void Window::MainLoop()
@@ -42,6 +63,7 @@ void Window::MainLoop()
 		glfwSwapBuffers(this->window);
 
 		glfwPollEvents();
+		event_system->ProcessAllAndYieldAll();
 	}
 
 	glfwDestroyWindow(this->window);

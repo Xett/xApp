@@ -22,7 +22,7 @@ add_subdirectory( ${GLFW_DIR} )
 add_subdirectory( ${XEVENTSYSTEM_DIR} )
 
 # Add source to this project's executable.
-add_library (xApp STATIC "Application.h" "Application.cpp"  "Window.h" "Window.cpp" "WindowResizeEvent.h" "WindowResizeEvent.cpp" )
+add_library (xApp STATIC "Application.h" "Application.cpp"  "Window.h" "Window.cpp" "WindowResizeEvent.h" "WindowResizeEventDispatcher.h" "WindowResizeEventDispatcher.cpp" )
 add_executable ( xApp_demo "xApp_demo.cpp" )
 target_include_directories(xApp PRIVATE ${GLEW_INCLUDE} ${GLFW_DIR}/include )
 target_include_directories(xApp_demo PRIVATE ${GLEW_INCLUDE} ${GLFW_DIR}/include )

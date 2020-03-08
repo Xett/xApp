@@ -13,7 +13,6 @@ public:
 	Application(const char* window_name);
 	static void ShowGLFWError(int error, const char* description);
 	void MainLoop();
-	bool is_running;
 };
 
 #endif
